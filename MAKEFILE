@@ -1,0 +1,6 @@
+all:
+	make project2
+project2:
+	gcc -o project2
+clean
+	rm -f project2

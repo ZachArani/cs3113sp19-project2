@@ -1,0 +1,70 @@
+# cs3113sp19-project2
+## Specification
+This project is an implementation of the 
+* Best fit
+* First Fit
+* Next Fit
+* Buddy System
+
+Memory management algorithms using test configuration files which describe commands. A short overview of each algorithm follows along with some example configuration and usage.
+
+## Code Overview
+### Best Fit
+Best fit will try to find the smallest block of memory it can allocate for a given resource. In this design, memory does not discretely exist for each possible address space. Instead, whenever a given process attempts to allocate memory, it is compared to other processes that have already allocated memory from space *A* to *B*. So if no memory has been allocated yet, process *A* will simply get the memory from *0* to the size requested. 
+### First Fit
+First fit will attempt to find the first possible location that a memory address can possibly fit into. The actual memory is implemeneted just as in Best fit above.
+### Next Fit
+Next fit works like first fit, but after each fit it will remember where it last fitted and resume searching from there. The actual memory is implemented just as best fit above.
+### Buddy System
+In the buddy system memory is stored in 2^k increments. If a process needs memory, it will start searching for a block that most closely fits it. Once it finds that block, it splits the memory block in two until it fits it as close as possible. Once two adjacent blocks are free, they will merge into one and combine their respective sizes. The memory system is implemented with a Binary Tree based on an array implementation. 
+
+## Usage 
+    ./project2 BESTFIT N ex75.txt
+    ./project2 FIRSTFIT N ex75.txt
+    ./project2 NEXTFIT N ex75.txt
+    ./project2 BUDDY N ex76.txt
+Where N is the total memory size (in a 2^k size) and ex75.txt is the file with the configuration
+
+## Configuration
+A configuration file can include the commands
+
+    REQUEST A n
+Where *A* is the process name and *n* is the allocation size
+    
+    RELEASE A
+Where *A* is the proccess name
+
+    LIST AVAILABLE
+Lists all the free space in memory
+    
+    LIST ALLOCATED
+Lists all of the taken up space in memory
+
+    FIND A
+Find process *A* in memory
+
+Comments also supported 
+
+### Configuration File Example
+    # Start from nothing
+    LIST AVAILABLE
+    REQUEST A 131072
+    # Check to see if A was added
+    LIST ASSIGNED
+    REQUEST B 240000
+    REQUEST C 65536
+    REQUEST D 262144
+    LIST AVAILABLE
+    RELEASE B
+    RELEASE A
+    LIST AVAILABLE
+    REQUEST E 75000
+    FIND E
+    RELEASE C
+    RELEASE E
+    RELEASE D
+    # Everything should be gone
+    LIST ASSIGNED
+
+    
+
